@@ -14,9 +14,18 @@ public class WeightedEdgeDouble extends Edge {
 		this.weight = w;
 	}
 	
+	public WeightedEdgeDouble(int node, double w, byte t) {
+		super(node, t);
+		this.weight = w;
+	}
+	
 	@Override
 	public double getWeight(){
 		return this.weight;
+	}
+
+	public void setWeight(double weight) {
+		this.weight = weight;
 	}
 
 }

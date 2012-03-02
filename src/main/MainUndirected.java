@@ -2,6 +2,7 @@ package main;
 
 import io.gnuplot.Plot;
 import io.graph.EdgesOnlyReader;
+import io.graph.EdgesOnlyWriter;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,40 +14,48 @@ import motife.undirected.AllNodeDistMotifAnalyzer;
 import motife.undirected.AllUndirectedMotifAnalyzer;
 import motife.undirected.Clique3MotifAnalyzer;
 import motife.undirected.NodeAnalyzerUndirected;
+import architecture.graph.DirectedNLGraph;
 import architecture.graph.Graph;
 import architecture.graph.UndirectedNLGraph;
 import architecture.node.Node;
 import config.Config;
 
 public class MainUndirected {
-	public static String[] files = {  "ER0.05.graph", "ER0.1.graph",
-			"ER0.2.graph", "ER0.5.graph" };
-	public static String[] titles = { "ER0.05", "ER0.1", "ER0.2", "ER0.5" };
+	public static String[] files = {  "test" };
+	public static String[] titles = { "Test"};
 	public static String folder = "graphs/";
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		try {
+			Graph g = new DirectedNLGraph(new EdgesOnlyReader("test.txt"));
+			(new EdgesOnlyWriter("testD.txt")).writeGraph(g);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		// Create result folder if it does not exist
-		String result = "results/";
-		File dir = new File(result);
-		dir.mkdir();
-        
-		// run test case
-		Counts();
-		EdgeWeights();
-		Weights();
-		EdgeWeightsDist();
-		WeightsDist();
-		EdgeWeightsDistMotif2();
-		WeightsDistMotif2();
-		Retrieve();
-		RetrieveAll();
-		Node();
-		NodeDist();
-		NodeDistIndex();
-		NodeDistIndexM2();
+//		String result = "results/";
+//		File dir = new File(result);
+//		dir.mkdir();
+//        
+//		// run test case
+//		Counts();
+//		EdgeWeights();
+//		Weights();
+//		EdgeWeightsDist();
+//		WeightsDist();
+//		EdgeWeightsDistMotif2();
+//		WeightsDistMotif2();
+//		Retrieve();
+//		RetrieveAll();
+//		Node();
+//		NodeDist();
+//		NodeDistIndex();
+//		NodeDistIndexM2();
 	}
 
 	/**

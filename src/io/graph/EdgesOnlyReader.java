@@ -42,7 +42,7 @@ public class EdgesOnlyReader extends GraphReader {
 			String[] parts;
 			Node node1,node2;
 			Vector<Edge> edges1, edges2;
-			Edge newEdge;
+			Edge newEdge,newEdge2;
 			int index1,index2;
 			while (line != null){
 				parts = line.split(Config.DELIMINATOR);
@@ -78,7 +78,8 @@ public class EdgesOnlyReader extends GraphReader {
 				//avoid parallel edges
 				index2 = node2.getIndex();
 				if (Config.COLUMNS == 2 || Config.COLUMNS == 4){
-					newEdge = new Edge(index2);
+					
+					  newEdge = new Edge(index2);
 				}else {
 					if (Config.EDGEWEIGHTTYPEINT){
 						newEdge = new WeightedEdge(index2,Integer.parseInt(parts[2]));
@@ -86,25 +87,69 @@ public class EdgesOnlyReader extends GraphReader {
 						newEdge = new WeightedEdgeDouble(index2,Double.parseDouble(parts[2]));
 					}
 				}
-				if (!edges1.contains(newEdge)){
-					edges1.add(newEdge);
-				}
-				//add edge in other direction if graph is undirected
-				if (!directed){
-					index1 = node1.getIndex();
-					if (Config.COLUMNS == 2 || Config.COLUMNS == 4){
-						newEdge = new Edge(index1);
+				index1 = node1.getIndex();
+				if (Config.COLUMNS == 2 || Config.COLUMNS == 4){
+					newEdge2 = new Edge(index1);
+				}else {
+					if (Config.EDGEWEIGHTTYPEINT){
+						newEdge2 = new WeightedEdge(index1,Integer.parseInt(parts[2]));
 					}else {
-						if (Config.EDGEWEIGHTTYPEINT){
-							newEdge = new WeightedEdge(index1,Integer.parseInt(parts[2]));
-						}else {
-							newEdge = new WeightedEdgeDouble(index1,Double.parseDouble(parts[2]));
+						newEdge2 = new WeightedEdgeDouble(index1,Double.parseDouble(parts[2]));
+					}
+				}
+				
+				
+				//add direction
+				if (directed){
+					newEdge.setType((byte) 1);
+					newEdge2.setType((byte) -1);
+				}
+				
+				    
+					if (!edges1.contains(newEdge)){
+						edges1.add(newEdge);
+					} else {
+						Edge old;
+						for (int i = 0; i < edges1.size(); i++){
+							if (edges1.get(i).getNode() == index2){
+								old = edges1.get(i);
+								byte t = old.getType();
+								if (t == -1){
+									old.setType((byte)0);
+									if (old instanceof WeightedEdge){
+										((WeightedEdge)old).setWeight((int)old.getWeight() + (int)newEdge.getWeight());
+									}
+									if (old instanceof WeightedEdgeDouble){
+										((WeightedEdgeDouble)old).setWeight(old.getWeight() + newEdge.getWeight());
+									}
+								} else {
+									break;
+								}
+							}
 						}
 					}
-					if (!edges2.contains(newEdge)){
-						edges2.add(newEdge);
+					if (!edges2.contains(newEdge2)){
+						edges2.add(newEdge2);
+					}else {
+						Edge old;
+						for (int i = 0; i < edges2.size(); i++){
+							if (edges2.get(i).getNode() == index1){
+								old = edges2.get(i);
+								byte t = old.getType();
+								if (t == 1){
+									old.setType((byte)0);
+									if (old instanceof WeightedEdge){
+										((WeightedEdge)old).setWeight((int)old.getWeight() + (int)newEdge.getWeight());
+									}
+									if (old instanceof WeightedEdgeDouble){
+										((WeightedEdgeDouble)old).setWeight(old.getWeight() + newEdge.getWeight());
+									}
+								} else {
+									break;
+								}
+							}
+						}
 					}
-				}
 				
 				line = this.readLine();
 			}

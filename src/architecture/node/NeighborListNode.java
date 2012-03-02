@@ -27,6 +27,7 @@ public class NeighborListNode extends Node {
 	public NeighborListNode(int i, String l, double w, Edge[] n) {
 		super(i, l, w);
 		this.neighbors = n;
+		
 		Arrays.sort(this.neighbors);
 	}
 	

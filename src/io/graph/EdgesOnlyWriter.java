@@ -30,7 +30,7 @@ public class EdgesOnlyWriter extends GraphWriter {
         	edges = node.getNeighbors();
         	for (int j = 0; j < edges.length; j++){
         		edge = edges[j];
-        		if (graph.isDirected() || edge.getNode() > node.getIndex()){
+        		if ((graph.isDirected() && edge.getType() > -1) || (!graph.isDirected() && node.getIndex() < edge.getNode())){
         			line = node.getLabel() + " " + nodes[edge.getNode()].getLabel();
         			if (Config.COLUMNS == 3 || Config.COLUMNS == 5){
         				if (Config.EDGEWEIGHTTYPEINT){

@@ -8,9 +8,16 @@ package architecture.edge;
 
 public class Edge implements Comparable{
 	private int node;
+	private byte type; 
 	
 	public Edge(int node){
 		this.node = node;
+		setType((byte) 0);
+	}
+	
+	public Edge(int node, byte type){
+		this.node = node;
+		this.setType(type);
 	}
 
 	public int getNode() {
@@ -28,6 +35,8 @@ public class Edge implements Comparable{
 	public double getWeight() {
 		return 0;
 	}
+	
+	
 
 	
 
@@ -66,6 +75,20 @@ public class Edge implements Comparable{
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public byte getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(byte type) {
+		this.type = type;
 	}
 	
 	

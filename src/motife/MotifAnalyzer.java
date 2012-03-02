@@ -3,6 +3,7 @@ package motife;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 
 import util.ArrayExpand;
 import util.RetrieveDone;
@@ -290,5 +291,7 @@ public abstract class MotifAnalyzer {
 		array[pos]++;
 		return array;
 	}
+	
+	
 
 }

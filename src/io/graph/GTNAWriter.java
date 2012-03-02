@@ -37,10 +37,12 @@ public class GTNAWriter extends GraphWriter{
         	edges = node.getNeighbors();
         	line = i + sep1;
         	for (int j = 0; j < edges.length; j++){
+        		if (edges[j].getType() > -1){
         		edge = edges[j];
         		line = line + edge.getNode();
         		if (j < edges.length -1){
         			line = line + sep2;
+        		}
         		}
         	}
         	this.newLine();

@@ -9,13 +9,13 @@ package config;
 
 public class Config {
 	//deliminator in edges-only representation of graphs
-	public static String DELIMINATOR = "	";
+	public static String DELIMINATOR = " ";
 	//columns relevant for input
 	// 2 -> not weighted
 	// 3 -> edge weights
 	// 4 -> node weights
 	// 5 -> edge + node weights
-	public static int COLUMNS = 3;
+	public static int COLUMNS = 2;
 	
 	//type of edge weights integer?
 	public static boolean EDGEWEIGHTTYPEINT = true; 
