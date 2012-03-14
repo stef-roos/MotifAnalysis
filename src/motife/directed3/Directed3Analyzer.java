@@ -28,20 +28,20 @@ import architecture.node.Node;
 public class Directed3Analyzer extends MotifRetriever {
 	
 	public Directed3Analyzer(boolean edgeWeights, boolean nodeWeights) {
-		super(13, new int[] {3,3,3, 3,3,3, 3,3,3, 3,3,3, 3}, new int[]{2,2,2,2,3,3,2,2,3,3,3,3,3}, edgeWeights, nodeWeights, false,null);
+		super(13, new int[]{2,2,2,2,3,3,2,2,3,3,3,3,3}, new int[] {3,3,3, 3,3,3, 3,3,3, 3,3,3, 3}, edgeWeights, nodeWeights, false,null);
 	}
 	
 	public Directed3Analyzer(boolean edgeWeights, boolean nodeWeights, String retrieve) {
-		super(13, new int[] {3,3,3, 3,3,3, 3,3,3, 3,3,3, 3}, new int[]{2,2,2,2,3,3,2,2,3,3,3,3,3}, edgeWeights, nodeWeights, true,retrieve);
+		super(13,  new int[]{2,2,2,2,3,3,2,2,3,3,3,3,3},new int[] {3,3,3, 3,3,3, 3,3,3, 3,3,3, 3}, edgeWeights, nodeWeights, true,retrieve);
 	}
 	
 	public Directed3Analyzer(boolean edgeWeights, boolean nodeWeights, String retrieve, int[] bounds) {
-		super(13, new int[] {3,3,3, 3,3,3, 3,3,3, 3,3,3, 3}, new int[]{2,2,2,2,3,3,2,2,3,3,3,3,3}, edgeWeights, nodeWeights, 
+		super(13, new int[]{2,2,2,2,3,3,2,2,3,3,3,3,3}, new int[] {3,3,3, 3,3,3, 3,3,3, 3,3,3, 3}, edgeWeights, nodeWeights, 
 				true, bounds, retrieve);
 	}
 	
 	public Directed3Analyzer(boolean edgeWeights, boolean nodeWeights, String retrieve, int bounds) {
-		super(13, new int[] {3,3,3, 3,3,3, 3,3,3, 3,3,3, 3}, new int[]{2,2,2,2,3,3,2,2,3,3,3,3,3}, edgeWeights, nodeWeights, 
+		super(13, new int[]{2,2,2,2,3,3,2,2,3,3,3,3,3},new int[] {3,3,3, 3,3,3, 3,3,3, 3,3,3, 3}, edgeWeights, nodeWeights, 
 				true, bounds, retrieve);
 	}
 
@@ -51,20 +51,26 @@ public class Directed3Analyzer extends MotifRetriever {
 		Node[] curNodes = new Node[3];
 		Edge[] curEdges = new Edge[3];
         for (int i = 0; i < nodes.length; i++){
+        	//System.out.println("i " + i);
         	Edge[] neighbors = nodes[i].getNeighbors();
         	curNodes[0] = nodes[i];
         	for (int j = 0; j < neighbors.length-1; j++){
+        		
         		curEdges[0] = neighbors[j];
         		curNodes[1] = nodes[curEdges[0].getNode()];
-        		for (int k = j+1; k < neighbors.length-1; k++){
+        		//System.out.println("j " +curNodes[1].getIndex());
+        		for (int k = j+1; k < neighbors.length; k++){
         			curEdges[1] = neighbors[k];
             		curNodes[2] = nodes[curEdges[1].getNode()];
-            		curEdges[2] = nodes[1].getLink(nodes[2].getIndex());
+            		//System.out.println("k " +curNodes[2].getIndex());
+            		curEdges[2] = curNodes[1].getLink(curNodes[2].getIndex());
             		if (curEdges[2] == null){
+            			//System.out.println("Triplet " + curNodes[0].getIndex() + " " + curNodes[1].getIndex() + " " + curNodes[2].getIndex());
             			analyzeTriple(curNodes,curEdges);
             		} else {
-            			if (nodes[0].getIndex() < nodes[1].getIndex() && nodes[0].getIndex() < nodes[2].getIndex()){
-            				analyzeTriangle(curNodes,curEdges);
+            			if (curNodes[0].getIndex() < curNodes[1].getIndex() && curNodes[0].getIndex() < curNodes[2].getIndex()){
+            				//System.out.println("Triangle " + curNodes[0].getIndex() + " " + curNodes[1].getIndex() + " " + curNodes[2].getIndex());
+                			analyzeTriangle(curNodes,curEdges);
             			}
             		}
         		}

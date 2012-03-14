@@ -268,6 +268,9 @@ public abstract class MotifAnalyzer {
 		if (this.motifweights != null){
 			this.edgeweight = 0;
 			for (int j = 0; j < this.edges[index]; j++){
+				if (motifEdges[j] == null){
+					System.out.println(index + " " + j + " " +this.edges[index]);
+				}
 				this.edgeweight = this.edgeweight  + motifEdges[j].getWeight();
 			}
 			this.motifweights[index] = this.motifweights[index] + this.edgeweight;
