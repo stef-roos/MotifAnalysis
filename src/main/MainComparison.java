@@ -1,11 +1,16 @@
 package main;
 
+import io.graph.EdgesOnlyReader;
+
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
+import motife.undirected.NodeRetrieverUndirected;
 import architecture.graph.Graph;
+import architecture.graph.UndirectedNLGraph;
 import architecture.node.Node;
 
 public class MainComparison {
@@ -17,6 +22,33 @@ public class MainComparison {
 	public static void main(String[] args) {
 		int[] counts;
 
+	}
+	
+	private static void processFiles(String graphFile1, String graphFile2, String edgeFile1, String edgeFile2){
+		try {
+			Graph a = new UndirectedNLGraph(new EdgesOnlyReader(graphFile1));
+			Graph b = new UndirectedNLGraph(new EdgesOnlyReader(graphFile2));
+			HashMap<Integer,Integer> map = getMap(a,b,edgeFile1,edgeFile2);
+			Node[] nodesA = a.getNodes();
+			Node[] nodesB = b.getNodes();
+			int[] count = new int[6];
+			int[][] diff = new int[6][7];
+			NodeRetrieverUndirected r = new NodeRetrieverUndirected(false, false, false,null,null,null);
+			NodeRetrieverUndirected r2 = new NodeRetrieverUndirected(false, false, false,null,null,null);
+			
+			for (int i = 0; i < nodesA.length; i++){
+				r.setNode(nodesA[i]);
+				boolean duo = false;
+				Integer index = map.get(i);
+				if (index != null){
+				  r2.setNode(nodesB[index]);
+				  duo = true;
+				}
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private static HashMap<Integer,Integer> getMap(Graph a, Graph b,String fileA, String fileB){

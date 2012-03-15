@@ -99,7 +99,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 		}
 	}
 	
-	public Vector<String[]> analyzeMotif(Graph g, int motif) {
+	public Vector<int[]> analyzeMotif(Graph g, int motif) {
 		if (motif==1){
 			return this.analyzeMotif1(g);
 		}
@@ -127,33 +127,33 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 		throw new IllegalArgumentException("There is no motif with index " + motif);
 	}
 	
-	public Vector<String[]> analyzeMotif1(Graph g){
+	public Vector<int[]> analyzeMotif1(Graph g){
 		int count = 0;
 		Node[] nodes = g.getNodes();
 		Edge[] neighbors, neighbors2;
 		Node[] motifNodes = new Node[3];
 		Edge[] motifEdges = new Edge[2];
-		Vector<String[]> res = new Vector<String[]>();
-		String[] label = new String[motifNodes.length]; 
+		Vector<int[]> res = new Vector<int[]>();
+		int[] index = new int[motifNodes.length]; 
 		
 		motifNodes[0] = this.getNode();
-		label[0] = motifNodes[0].getLabel();
+		index[0] = motifNodes[0].getIndex();
 		neighbors = motifNodes[0].getNeighbors();
 
 		for (int j = 0; j < neighbors.length; j++){
 			motifEdges[0] = neighbors[j];
 			motifNodes[1] = nodes[neighbors[j].getNode()];
-			label[1] = motifNodes[1].getLabel();
+			index[1] = motifNodes[1].getIndex();
 			
 			//case 1: node has degree 2 in Motif
 			for (int k = j + 1; k < neighbors.length; k++){
 				motifEdges[1] = neighbors[k];
 				motifNodes[2] = nodes[neighbors[k].getNode()];
-				label[2] = motifNodes[2].getLabel();
+				index[2] = motifNodes[2].getIndex();
 				if (motifNodes[1].getLink(motifNodes[2].getIndex()) == null){
 					//this.evaluateMotif(0, motifNodes, motifEdges);
 					count++;
-					res.add(label.clone());
+					res.add(index.clone());
 				}
 			}
 			
@@ -165,11 +165,11 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 				}
 				motifEdges[1] = neighbors2[k];
 				motifNodes[2] = nodes[neighbors2[k].getNode()];
-				label[2] = motifNodes[2].getLabel();
+				index[2] = motifNodes[2].getIndex();
 				if (motifNodes[0].getLink(motifNodes[2].getIndex()) == null){
 					//this.evaluateMotif(0, motifNodes, motifEdges);
 					count++;
-					res.add(label.clone());
+					res.add(index.clone());
 				}
 			}
 		}
@@ -177,34 +177,34 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 		return res;
 	}
 	
-	public Vector<String[]> analyzeMotif2(Graph g){
+	public Vector<int[]> analyzeMotif2(Graph g){
 		int count = 0;
 		Node[] nodes = g.getNodes();
 		Edge[] neighbors, neighbors2;
 		Node[] motifNodes = new Node[3];
 		Edge[] motifEdges = new Edge[3];
-		Vector<String[]> res = new Vector<String[]>();
-		String[] label = new String[motifNodes.length]; 
+		Vector<int[]> res = new Vector<int[]>();
+		int[] index = new int[motifNodes.length]; 
 		
 		motifNodes[0] = this.getNode();
-		label[0] = motifNodes[0].getLabel();
+		index[0] = motifNodes[0].getIndex();
 		neighbors = motifNodes[0].getNeighbors();
 
 		for (int j = 0; j < neighbors.length; j++){
 			motifEdges[0] = neighbors[j];
 			motifNodes[1] = nodes[neighbors[j].getNode()];
-			label[1] = motifNodes[1].getLabel();
+			index[1] = motifNodes[1].getIndex();
 			//case 1: node has degree 2 in Motif
 			for (int k = j + 1; k < neighbors.length; k++){
 				motifEdges[1] = neighbors[k];
 				motifNodes[2] = nodes[neighbors[k].getNode()];
-				label[2] = motifNodes[2].getLabel();
+				index[2] = motifNodes[2].getIndex();
 				
 				motifEdges[2] = motifNodes[1].getLink(motifNodes[2].getIndex()); 
 				if (motifEdges[2] != null){
 					//this.evaluateMotif(1, motifNodes, motifEdges);
 					count++;
-					res.add(label.clone());
+					res.add(index.clone());
 				}
 			}
 			
@@ -214,28 +214,28 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 		return res;
 	}
 	
-	public Vector<String[]> analyzeMotif3(Graph g){
+	public Vector<int[]> analyzeMotif3(Graph g){
 		int count = 0;
 		Node[] nodes = g.getNodes();
 		Edge[] neighbors, neighbors2;
 		Node[] motifNodes = new Node[4];
 		Edge[] motifEdges = new Edge[3];
-		Vector<String[]> res = new Vector<String[]>();
-		String[] label = new String[motifNodes.length]; 
+		Vector<int[]> res = new Vector<int[]>();
+		int[] index = new int[motifNodes.length]; 
 		
 		motifNodes[0] = this.getNode();
-		label[0] = motifNodes[0].getLabel();
+		index[0] = motifNodes[0].getIndex();
 		neighbors = motifNodes[0].getNeighbors();
 
 		for (int j = 0; j < neighbors.length; j++){
 			motifEdges[0] = neighbors[j];
 			motifNodes[1] = nodes[neighbors[j].getNode()];
-			label[1] = motifNodes[1].getLabel();
+			index[1] = motifNodes[1].getIndex();
 			//case 1: node has degree 3 in Motif
 			for (int k = j + 1; k < neighbors.length-1; k++){
 				motifEdges[1] = neighbors[k];
 				motifNodes[2] = nodes[neighbors[k].getNode()];
-				label[2] = motifNodes[2].getLabel();
+				index[2] = motifNodes[2].getIndex();
 				if (motifNodes[1].getLink(motifNodes[2].getIndex()) != null){
 					continue;
 				}
@@ -243,7 +243,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 				for (int l = k + 1; l < neighbors.length; l++){
 					motifEdges[2] = neighbors[l];
 					motifNodes[3] = nodes[neighbors[l].getNode()];
-					label[3] = motifNodes[3].getLabel();
+					index[3] = motifNodes[3].getIndex();
 					if (motifNodes[1].getLink(motifNodes[3].getIndex()) != null
 						|| 	motifNodes[2].getLink(motifNodes[3].getIndex()) != null){
 						continue;
@@ -251,7 +251,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(2, motifNodes, motifEdges);
 					count++;
-					res.add(label.clone());
+					res.add(index.clone());
 				}
 				
 			}
@@ -261,7 +261,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 			for (int k = 0; k < neighbors2.length-1; k++){
 				motifEdges[1] = neighbors2[k];
 				motifNodes[2] = nodes[neighbors2[k].getNode()];
-				label[2] = motifNodes[2].getLabel();
+				index[2] = motifNodes[2].getIndex();
 				if (motifNodes[2].getIndex() == motifNodes[0].getIndex() ||
 					motifNodes[0].getLink(motifNodes[2].getIndex()) != null	){
 					continue;
@@ -269,7 +269,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 				for (int l = k + 1; l < neighbors2.length; l++){
 					motifEdges[2] = neighbors2[l];
 					motifNodes[3] = nodes[neighbors2[l].getNode()];
-					label[3] = motifNodes[3].getLabel();
+					index[3] = motifNodes[3].getIndex();
 					if (motifNodes[3].getIndex() == motifNodes[0].getIndex() ||
 						motifNodes[0].getLink(motifNodes[3].getIndex()) != null	||
 						motifNodes[2].getLink(motifNodes[3].getIndex()) != null){
@@ -278,7 +278,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(2, motifNodes, motifEdges);
 					count++;
-					res.add(label.clone());
+					res.add(index.clone());
 				}
 			}
 		}
@@ -286,29 +286,29 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 		return res;
 	}
 	
-	public Vector<String[]> analyzeMotif4(Graph g){
+	public Vector<int[]> analyzeMotif4(Graph g){
 		int count = 0;
 		Node[] nodes = g.getNodes();
 		Edge[] neighbors, neighbors2, neighbors3;
 		Node[] motifNodes = new Node[4];
 		Edge[] motifEdges = new Edge[3];
-		Vector<String[]> res = new Vector<String[]>();
-		String[] label = new String[motifNodes.length]; 
+		Vector<int[]> res = new Vector<int[]>();
+		int[] index = new int[motifNodes.length]; 
 		
 		motifNodes[0] = this.getNode();
-		label[0] = motifNodes[0].getLabel();
+		index[0] = motifNodes[0].getIndex();
 		neighbors = motifNodes[0].getNeighbors();
 
 		for (int j = 0; j < neighbors.length; j++){
 			motifEdges[0] = neighbors[j];
 			motifNodes[1] = nodes[neighbors[j].getNode()];
-			label[1] = motifNodes[1].getLabel();
+			index[1] = motifNodes[1].getIndex();
 			
 			neighbors2 = motifNodes[1].getNeighbors();
 			for (int k = 0; k < neighbors2.length; k++){
 				motifEdges[1] = neighbors2[k];
 				motifNodes[2] = nodes[neighbors2[k].getNode()];
-				label[2] = motifNodes[2].getLabel();
+				index[2] = motifNodes[2].getIndex();
 				if (motifNodes[2].getIndex() == motifNodes[0].getIndex() ||
 					motifNodes[0].getLink(motifNodes[2].getIndex()) != null	){
 					continue;
@@ -318,7 +318,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 				for (int l = 0; l < neighbors.length; l++){
 					motifEdges[2] = neighbors[l];
 					motifNodes[3] = nodes[neighbors[l].getNode()];
-					label[3] = motifNodes[3].getLabel();
+					index[3] = motifNodes[3].getIndex();
 					if (motifNodes[3].getIndex() == motifNodes[1].getIndex() ||
 						motifNodes[1].getLink(motifNodes[3].getIndex()) != null	||
 						motifNodes[2].getLink(motifNodes[3].getIndex()) != null	){
@@ -327,7 +327,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(3, motifNodes, motifEdges);
 					count++;
-					res.add(label.clone());
+					res.add(index.clone());
 				}
 				
 				//case: Nodes has degree 1 in motif
@@ -335,7 +335,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 				for (int l = 0; l < neighbors3.length; l++){
 					motifEdges[2] = neighbors3[l];
 					motifNodes[3] = nodes[neighbors3[l].getNode()];
-					label[3] = motifNodes[3].getLabel();
+					index[3] = motifNodes[3].getIndex();
 					if (motifNodes[3].getIndex() == motifNodes[1].getIndex() ||
 						motifNodes[0].getLink(motifNodes[3].getIndex()) != null	||
 						motifNodes[1].getLink(motifNodes[3].getIndex()) != null	){
@@ -344,7 +344,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(3, motifNodes, motifEdges);
 					count++;
-					res.add(label.clone());
+					res.add(index.clone());
 				}
 			}
 		}
@@ -352,28 +352,28 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 		return res;
 	}
 	
-	public Vector<String[]> analyzeMotif5(Graph g){
+	public Vector<int[]> analyzeMotif5(Graph g){
 		int count = 0;
 		Node[] nodes = g.getNodes();
 		Edge[] neighbors, neighbors2;
 		Node[] motifNodes = new Node[4];
 		Edge[] motifEdges = new Edge[4];
-		Vector<String[]> res = new Vector<String[]>();
-		String[] label = new String[motifNodes.length]; 
+		Vector<int[]> res = new Vector<int[]>();
+		int[] index = new int[motifNodes.length]; 
 		
 		motifNodes[0] = this.getNode();
-		label[0] = motifNodes[0].getLabel();
+		index[0] = motifNodes[0].getIndex();
 		neighbors = motifNodes[0].getNeighbors();
 
 		for (int j = 0; j < neighbors.length; j++){
 			motifEdges[0] = neighbors[j];
 			motifNodes[1] = nodes[neighbors[j].getNode()];
-			label[1] = motifNodes[1].getLabel();
+			index[1] = motifNodes[1].getIndex();
 			
 			for (int k = j + 1; k < neighbors.length; k++){
 				motifEdges[1] = neighbors[k];
 				motifNodes[2] = nodes[neighbors[k].getNode()];
-				label[2] = motifNodes[2].getLabel();
+				index[2] = motifNodes[2].getIndex();
 				motifEdges[2] = motifNodes[1].getLink(motifNodes[2].getIndex()); 
 				if (motifEdges[2] == null){
 					continue;
@@ -386,7 +386,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					}
 					motifEdges[3] = neighbors[l];
 					motifNodes[3] = nodes[neighbors[l].getNode()];
-					label[3] = motifNodes[3].getLabel();
+					index[3] = motifNodes[3].getIndex();
 					if (motifNodes[1].getLink(motifNodes[3].getIndex()) != null	||
 						motifNodes[2].getLink(motifNodes[3].getIndex()) != null	){
 						continue;
@@ -394,7 +394,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(4, motifNodes, motifEdges);
 					count++;
-					res.add(label.clone());
+					res.add(index.clone());
 				}	
 				
 				//case 2: node has degree 2
@@ -402,7 +402,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 				for (int l = 0; l < neighbors2.length;l++){
 					motifEdges[3] = neighbors2[l];
 					motifNodes[3] = nodes[neighbors2[l].getNode()];
-					label[3] = motifNodes[3].getLabel();
+					index[3] = motifNodes[3].getIndex();
 					if (motifNodes[3].getIndex() == motifNodes[0].getIndex() ||
 						motifNodes[3].getIndex() == motifNodes[2].getIndex() ||
 						motifNodes[0].getLink(motifNodes[3].getIndex()) != null	||
@@ -412,14 +412,14 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(4, motifNodes, motifEdges);
 					count++;
-					res.add(label.clone());
+					res.add(index.clone());
 				}
 				
 				neighbors2 = motifNodes[2].getNeighbors();
 				for (int l = 0; l < neighbors2.length;l++){
 					motifEdges[3] = neighbors2[l];
 					motifNodes[3] = nodes[neighbors2[l].getNode()];
-					label[3] = motifNodes[3].getLabel();
+					index[3] = motifNodes[3].getIndex();
 					if (motifNodes[3].getIndex() == motifNodes[0].getIndex() ||
 						motifNodes[3].getIndex() == motifNodes[1].getIndex() ||
 						motifNodes[0].getLink(motifNodes[3].getIndex()) != null	||
@@ -429,7 +429,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(4, motifNodes, motifEdges);
 					count++;
-					res.add(label.clone());
+					res.add(index.clone());
 				}
 			}
 			
@@ -438,7 +438,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 			for (int k = 0; k < neighbors2.length; k++){
 				motifEdges[1] = neighbors2[k];
 				motifNodes[2] = nodes[neighbors2[k].getNode()];
-				label[2] = motifNodes[2].getLabel();
+				index[2] = motifNodes[2].getIndex();
 				if (motifNodes[2].getIndex() == motifNodes[0].getIndex() ||
 					motifNodes[2].getLink(motifNodes[0].getIndex()) != null){
 					continue;
@@ -447,7 +447,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 				for (int l = k + 1; l < neighbors2.length; l++){
 					motifEdges[2] = neighbors2[l];
 					motifNodes[3] = nodes[neighbors2[l].getNode()];
-					label[3] = motifNodes[3].getLabel();
+					index[3] = motifNodes[3].getIndex();
 					if (motifNodes[3].getIndex() == motifNodes[0].getIndex() ){
 						continue;
 					}
@@ -460,7 +460,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(4, motifNodes, motifEdges);
 					count++;
-					res.add(label.clone());
+					res.add(index.clone());
 				}
 				
 			}
@@ -470,27 +470,27 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 		return res;
 	}
 	
-	public Vector<String[]> analyzeMotif6(Graph g){
+	public Vector<int[]> analyzeMotif6(Graph g){
 		int count = 0;
 		Node[] nodes = g.getNodes();
 		Edge[] neighbors, neighbors2;
 		Node[] motifNodes = new Node[4];
 		Edge[] motifEdges = new Edge[4];
-		Vector<String[]> res = new Vector<String[]>();
-		String[] label = new String[motifNodes.length]; 
+		Vector<int[]> res = new Vector<int[]>();
+		int[] index = new int[motifNodes.length]; 
 		
 		motifNodes[0] = this.getNode();
-		label[0] = motifNodes[0].getLabel();
+		index[0] = motifNodes[0].getIndex();
 		neighbors = motifNodes[0].getNeighbors();
 
 		for (int j = 0; j < neighbors.length-1; j++){
 			motifEdges[0] = neighbors[j];
 			motifNodes[1] = nodes[neighbors[j].getNode()];
-			label[1] = motifNodes[1].getLabel();
+			index[1] = motifNodes[1].getIndex();
 			for (int k = j + 1; k < neighbors.length; k++){
 				motifEdges[1] = neighbors[k];
 				motifNodes[2] = nodes[neighbors[k].getNode()];
-				label[2] = motifNodes[2].getLabel();
+				index[2] = motifNodes[2].getIndex();
 				if (motifNodes[1].getLink(motifNodes[2].getIndex()) != null){
 					continue;
 				}
@@ -499,7 +499,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 				for (int l = 0; l < neighbors2.length; l++){
 					motifEdges[2] = neighbors2[l];
 					motifNodes[3] = nodes[neighbors2[l].getNode()];
-					label[3] = motifNodes[3].getLabel();
+					index[3] = motifNodes[3].getIndex();
 					if (motifNodes[3].getIndex() == motifNodes[0].getIndex()){
 						continue;
 					}
@@ -512,7 +512,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(5, motifNodes, motifEdges);
 					count++;
-					res.add(label.clone());
+					res.add(index.clone());
 				}
 			}
 			
@@ -522,27 +522,27 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 		return res;
 	}
 	
-	public Vector<String[]> analyzeMotif7(Graph g){
+	public Vector<int[]> analyzeMotif7(Graph g){
 		int count = 0;
 		Node[] nodes = g.getNodes();
 		Edge[] neighbors, neighbors2;
 		Node[] motifNodes = new Node[4];
 		Edge[] motifEdges = new Edge[5];
-		Vector<String[]> res = new Vector<String[]>();
-		String[] label = new String[motifNodes.length]; 
+		Vector<int[]> res = new Vector<int[]>();
+		int[] index = new int[motifNodes.length]; 
 		
 		motifNodes[0] = this.getNode();
-		label[0] = motifNodes[0].getLabel();
+		index[0] = motifNodes[0].getIndex();
 		neighbors = motifNodes[0].getNeighbors();
 
 		for (int j = 0; j < neighbors.length-1; j++){
 			motifEdges[0] = neighbors[j];
 			motifNodes[1] = nodes[neighbors[j].getNode()];
-			label[1] = motifNodes[1].getLabel();
+			index[1] = motifNodes[1].getIndex();
 			for (int k = j + 1; k < neighbors.length; k++){
 				motifEdges[1] = neighbors[k];
 				motifNodes[2] = nodes[neighbors[k].getNode()];
-				label[2] = motifNodes[2].getLabel();
+				index[2] = motifNodes[2].getIndex();
 				motifEdges[2] = motifNodes[1].getLink(motifNodes[2].getIndex()); 
 				if ( motifEdges[2] != null){
 					
@@ -551,7 +551,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					for (int l = 0; l < neighbors2.length; l++){
 						motifEdges[3] = neighbors2[l];
 						motifNodes[3] = nodes[neighbors2[l].getNode()];
-						label[3] = motifNodes[3].getLabel();
+						index[3] = motifNodes[3].getIndex();
 						if (motifNodes[3].getIndex() == motifNodes[0].getIndex()){
 							continue;
 						}
@@ -564,7 +564,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 						
 						//this.evaluateMotif(6, motifNodes, motifEdges);
 						count++;
-						res.add(label.clone());
+						res.add(index.clone());
 					}
 				} else {
 					//case 2: Node has degree 3 in motif
@@ -572,7 +572,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					for (int l = 0; l < neighbors2.length; l++){
 						motifEdges[2] = neighbors2[l];
 						motifNodes[3] = nodes[neighbors2[l].getNode()];
-						label[3] = motifNodes[3].getLabel();
+						index[3] = motifNodes[3].getIndex();
 						if (motifNodes[3].getIndex() == motifNodes[0].getIndex() ||
 								motifNodes[3].getIndex() == motifNodes[2].getIndex()){
 							continue;
@@ -589,7 +589,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 						
 						//this.evaluateMotif(6, motifNodes, motifEdges);
 						count++;
-						res.add(label.clone());
+						res.add(index.clone());
 					}
 				}
 				
@@ -602,27 +602,27 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 		return res;
 	}
 	
-	public Vector<String[]> analyzeMotif8(Graph g){
+	public Vector<int[]> analyzeMotif8(Graph g){
 		int count = 0;
 		Node[] nodes = g.getNodes();
 		Edge[] neighbors;
 		Node[] motifNodes = new Node[4];
 		Edge[] motifEdges = new Edge[6];
-		Vector<String[]> res = new Vector<String[]>();
-		String[] label = new String[motifNodes.length]; 
+		Vector<int[]> res = new Vector<int[]>();
+		int[] index = new int[motifNodes.length]; 
 		
 		motifNodes[0] = this.getNode();
-		label[0] = motifNodes[0].getLabel();
+		index[0] = motifNodes[0].getIndex();
 		neighbors = motifNodes[0].getNeighbors();
 
 		for (int j = 0; j < neighbors.length-2; j++){
 			motifEdges[0] = neighbors[j];
 			motifNodes[1] = nodes[neighbors[j].getNode()];
-			label[1] = motifNodes[1].getLabel();
+			index[1] = motifNodes[1].getIndex();
 			for (int k = j + 1; k < neighbors.length-1; k++){
 				motifEdges[1] = neighbors[k];
 				motifNodes[2] = nodes[neighbors[k].getNode()];
-				label[2] = motifNodes[2].getLabel();
+				index[2] = motifNodes[2].getIndex();
 				motifEdges[2] = motifNodes[1].getLink(motifNodes[2].getIndex()); 
 				if (motifEdges[2] == null){
 					continue;
@@ -632,7 +632,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 			for (int l = k + 1; l < neighbors.length; l++){
 				motifEdges[3] = neighbors[l];
 				motifNodes[3] = nodes[neighbors[l].getNode()];
-				label[3] = motifNodes[3].getLabel();
+				index[3] = motifNodes[3].getIndex();
 				motifEdges[4] = motifNodes[1].getLink(motifNodes[3].getIndex()); 
 				if (motifEdges[4] == null){
 					continue;
@@ -643,7 +643,7 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 				}
 				//this.evaluateMotif(7, motifNodes, motifEdges);
 				count++;
-				res.add(label.clone());
+				res.add(index.clone());
 			}
 			}
 		}
