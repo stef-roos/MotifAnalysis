@@ -45,24 +45,33 @@ public class GnuplotWriter extends BufferedWriter {
 		this.write("set terminal " + terminal);
 		this.newLine();
 		if (lines){
-		 this.write("set style line 1 lt rgb \"red \" lw 3");
-		 this.newLine();
-		 this.write("set style line 2 lt rgb \"orange \" lw 3");
-		 this.newLine();
-		 this.write("set style line 3 lt rgb \"black \" lw 3");
-		 this.newLine();
-		 this.write("set style line 4 lt rgb \"green \" lw 3");
-		 this.newLine();
-		 this.write("set style line 5 lt rgb \"cyan \" lw 3");
-		 this.newLine();
-		 this.write("set style line 6 lt rgb \"blue \" lw 3");
-		 this.newLine();
-		 this.write("set style line 7 lt rgb \"violet \" lw 3");
-		 this.newLine();
-		 this.write("set style line 8 lt rgb \"brown \" lw 3");
-		 this.newLine();
-		 this.write("set style line 9 lt rgb \"gold \" lw 3");
-		 this.newLine();
+			String[] colors = {"\"red \"", "\"orange \"", "\"black \"", "\"green \"",
+					"\"cyan \"", "\"blue \"", "\"violet \"", "\"brown \"", "\"gold \""};
+			for (int i = 1; i < 4; i++){
+				for (int j = 0; j < colors.length; j++){
+					this.write("set style line "+((i-1)*colors.length + (j+1))+" lt "+ i + " lc rgb "+ 
+				colors[j] + " lw " + i);
+                    this.newLine();
+				}
+			}
+//		 this.write("set style line 1 lt rgb \"red \" lw 3");
+//		 this.newLine();
+//		 this.write("set style line 2 lt rgb \"orange \" lw 3");
+//		 this.newLine();
+//		 this.write("set style line 3 lt rgb \"black \" lw 3");
+//		 this.newLine();
+//		 this.write("set style line 4 lt rgb \"green \" lw 3");
+//		 this.newLine();
+//		 this.write("set style line 5 lt rgb \"cyan \" lw 3");
+//		 this.newLine();
+//		 this.write("set style line 6 lt rgb \"blue \" lw 3");
+//		 this.newLine();
+//		 this.write("set style line 7 lt rgb \"violet \" lw 3");
+//		 this.newLine();
+//		 this.write("set style line 8 lt rgb \"brown \" lw 3");
+//		 this.newLine();
+//		 this.write("set style line 9 lt rgb \"gold \" lw 3");
+//		 this.newLine();
 		}
 		if (xlabel != null){
 		  this.write("set xlabel '" + xlabel + "'");
@@ -84,6 +93,8 @@ public class GnuplotWriter extends BufferedWriter {
 			this.write("set yrange ["+yrange[0] + ":" + yrange[1]+"]");
 			this.newLine();
 		}
+		this.write("set key bottom left");
+		  this.newLine();
 		this.newLine();
 		this.newLine();
 	}
@@ -158,13 +169,11 @@ public class GnuplotWriter extends BufferedWriter {
 			if (j > 0){
 				plot = plot + ", ";
 			}
-			String[] parts = titles[j].split("/");
-			String title = parts[parts.length-1];
-			title = title.replace("_", "-");
+			
 			plot = plot + "'"+files[j]+"' using 1:"+columns[j]+" title "
-			        + "'" + title + "' with " + type;
+			        + "'" + titles[j] + "' with " + type;
 			if (style){
-				plot = plot + " ls " + (j % 9 +1);
+				plot = plot + " ls " + (j % 27 +1);
 			}
 		}
 		this.write(plot);

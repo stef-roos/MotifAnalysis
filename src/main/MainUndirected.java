@@ -2,7 +2,6 @@ package main;
 
 import io.gnuplot.Plot;
 import io.graph.EdgesOnlyReader;
-import io.graph.EdgesOnlyWriter;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +9,7 @@ import java.util.Random;
 
 import motife.MotifAnalyzer;
 import motife.MotifNodeRetriever;
+import motife.directed3.Directed3Analyzer;
 import motife.undirected.AllNodeDistMotifAnalyzer;
 import motife.undirected.AllUndirectedMotifAnalyzer;
 import motife.undirected.Clique3MotifAnalyzer;
@@ -31,7 +31,9 @@ public class MainUndirected {
 	public static void main(String[] args) {
 		try {
 			Graph g = new DirectedNLGraph(new EdgesOnlyReader("test.txt"));
-			(new EdgesOnlyWriter("testD.txt")).writeGraph(g);
+			System.out.println(g.getNodecount() + " " + g.getEdgecount());
+			MotifAnalyzer mo = new Directed3Analyzer(false, false);
+			mo.analyzeMotifs(false, false, "test", g);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
