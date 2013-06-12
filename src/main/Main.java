@@ -3,20 +3,24 @@ package main;
 import io.gnuplot.GnuplotWriter;
 import io.gnuplot.Plot;
 import io.graph.EdgesOnlyReader;
+import io.graph.GTNAWriter;
 import io.graph.GraphReader;
+import io.graph.GraphWriter;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 import motife.MotifAnalyzer;
 import motife.directed3.Directed3Analyzer;
-import motife.undirected.AllUndirectedMotifAnalyzer;
+import motife.undirected.FourChainMotifAnalyzer;
 import motife.undirected.FourUndirectedMotifAnalyzer;
 import architecture.graph.DirectedNLGraph;
 import architecture.graph.Graph;
@@ -29,13 +33,27 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-        //rewriteOverlap();
-		mainDirected("2gram", "2gram/");
-//		System.exit(0);
-		//scripting(10);
+
+		//mainGTNAGraph("words","data/POS_3lang_try3/", "../GTNA/POS_3lang_try3/");
+		//mainNoEdges("unsupos", "unsupos_graphs/", args[0]);
 		
-		System.out.println("Done " + new Date());
+		//plot all files in one
+		Tests.gnuplotAllPattern("results/unsupos/", "Count.txt", "results/unsupos/gnuall", "All.eps");
+		
+		//plot by language 
+		String[] langs = {"ces3M", "deu3M", "eng3M", "est3M", "fra3M", "ind3M", "ita3M","lit3M", "nld3M",
+				"por3M", "rus3M", "slv3M"};
+		for (int i = 0; i < langs.length; i++){
+			Tests.gnuplotAllPattern("results/unsupos/", langs[i], "results/unsupos/gnu"+langs[i], langs[i]+".eps");
+		}
+		
+		//plot each with verbs
+        Tests.gnuploteachWith("results/unsupos/", new String[]{"de1M-POS.co-s.VERB.f2s30Count.txt",
+        		"en1M-POS.co-s.VERB.f2s30Count.txt", "fr1M-POS.co-s.VERB.f2s30Count.txt"}, "results/unsupos/gnueach");
+
 	}
+	
+	
 	
 	public static void rewriteOverlap(){
 		//slen10-10.co_s.f2s10
@@ -106,13 +124,14 @@ public class Main {
 					
 				
 	}
-	
-	public static void mainOld(String title, String path){
+	public static void mainGTNAGraph(String title, String path, String resFolder){
 		String[] names = {""};
 		int[] counts = new int[names.length];
 		for (int n = 0; n < names.length; n++){
 			(new File("results/"+title+names[n])).mkdir();
 		}
+		(new File(resFolder)).mkdir();
+		//System.out.println(path);
 		String[] files = (new File(path)).list();
 		for (int i =0; i < files.length; i++){
 			if (files[i].contains("edges") ){
@@ -142,9 +161,237 @@ public class Main {
 		
 		//if (!(new File("results/"+title+ names[j]+"/"+name+ "Count.txt")).exists()) {
 		Graph g = new UndirectedNLGraph(read);
-		//GraphWriter gtna = new GTNAWriter("/Users/stefanie/workspace/GTNA/"+title+"/"+name,name,":", ";");
-		MotifAnalyzer mo = new AllUndirectedMotifAnalyzer(true,false);
+		GraphWriter gtna = new GTNAWriter(resFolder+"/"+name,name,":", ";");
+		gtna.writeGraph(g);
+		gtna.close();
+		//}
+		titles.get(j)[cur[j]] = name;
+		cur[j]++;
+		} catch(IOException e){
+			e.printStackTrace();
+		}
+					}
+				}
+		
+		//}		
+			}
+			
+			
+			
+	}
+//		for(int s = 0; s < titles.size(); s++){
+//			Plot.plotCountPerc("results/"+title+ names[s]+"/", titles.get(s), names[s]+"CountPerc", true);
+//			Plot.plotCounts("results/"+title+ names[s]+"/", titles.get(s), names[s]+"Count", true);
+//		}		
+	}
+	public static void mainOld(String title, String path){
+		String[] names = {""};
+		//(new File("../GTNA/"+title+"/")).mkdir();
+		int[] counts = new int[names.length];
+		for (int n = 0; n < names.length; n++){
+			(new File("results/"+title+names[n])).mkdir();
+		}
+		//System.out.println(path);
+		String[] files = (new File(path)).list();
+		for (int i =0; i < files.length; i++){
+			if (files[i].contains("edges") ){
+				for (int j = 0; j < names.length; j++){
+					if (files[i].contains(names[j])){
+						counts[j]++;
+					}
+				}
+			}
+		}
+		Vector<String[]> titles = new Vector<String[]>();
+		for (int j = 0; j < names.length; j++){
+			titles.add(new String[counts[j]]); 
+		}
+		int[] cur = new int[counts.length];
+		
+		for (int i = 0;i< files.length; i++){
+			if (files[i].contains("edges") ){
+				for (int j = 0; j < names.length; j++){
+					if (files[i].contains(names[j])){
+		System.out.println("Start " +files[i] + " " + new Date());
+		String name = files[i].replace(".edges", "").replace("_", "-");
+		
+		
+		try{
+		GraphReader read = new EdgesOnlyReader(path+files[i]);
+		
+		if (!(new File("results/"+title+ names[j]+"/"+name+ "Count.txt")).exists()) {
+		Graph g = new UndirectedNLGraph(read);
+		//GraphWriter gtna = new GTNAWriter("../GTNA/"+title+"/"+name,name,":", ";");
+		MotifAnalyzer mo = new FourUndirectedMotifAnalyzer(true,false);
 		mo.analyzeMotifs(false, false, "results/"+title+ names[j]+"/"+name, g);
+		//gtna.writeGraph(g);
+		//gtna.close();
+		}
+		titles.get(j)[cur[j]] = name;
+		cur[j]++;
+		} catch(IOException e){
+			e.printStackTrace();
+		}
+					}
+				}
+		
+		//}		
+			}
+			
+			
+			
+	}
+//		for(int s = 0; s < titles.size(); s++){
+//			Plot.plotCountPerc("results/"+title+ names[s]+"/", titles.get(s), names[s]+"CountPerc", true);
+//			Plot.plotCounts("results/"+title+ names[s]+"/", titles.get(s), names[s]+"Count", true);
+//		}		
+	}
+	
+	public static void mainNoEdges(String title, String path, String ending){
+		//for (int n = 0; n < names.length; n++){
+			(new File("results/"+title)).mkdir();
+		//}
+		//System.out.println(path);
+		String[] files = (new File(path)).list();
+		
+		
+		for (int i = 0;i< files.length; i++){
+			//if (files[i].contains("edges") ){
+			//System.out.println(files[i].split("_s.").length + " " + files[i]);
+			String index = files[i].split("_s.")[1];
+			if (index.equals(ending)){
+		System.out.println("Start " +files[i] + " " + new Date());
+		String name = files[i].replace(".edges", "").replace("_", "-");
+		
+		
+		try{
+		GraphReader read = new EdgesOnlyReader(path+files[i]);
+		
+		if (!(new File("results/"+title+ "/"+name+ "Count.txt")).exists()) {
+		Graph g = new UndirectedNLGraph(read);
+		//GraphWriter gtna = new GTNAWriter("../GTNA/"+title+"/"+name,name,":", ";");
+		MotifAnalyzer mo = new FourUndirectedMotifAnalyzer(true,false);
+		mo.analyzeMotifs(false, false, "results/"+title+ "/"+name, g);
+		//gtna.writeGraph(g);
+		//gtna.close();
+		}
+		
+		} catch(IOException e){
+			e.printStackTrace();
+		}
+					}
+			//	}
+		}
+		//}		
+			
+			
+			
+			
+	
+//		for(int s = 0; s < titles.size(); s++){
+//			Plot.plotCountPerc("results/"+title+ names[s]+"/", titles.get(s), names[s]+"CountPerc", true);
+//			Plot.plotCounts("results/"+title+ names[s]+"/", titles.get(s), names[s]+"Count", true);
+//		}		
+	}
+	
+	public static void mainPrefix(String title, String path, String[] names){
+		(new File("../GTNA/"+title+"/")).mkdir();
+		int[] counts = new int[names.length];
+		for (int n = 0; n < names.length; n++){
+			(new File("results/"+title+names[n])).mkdir();
+		}
+		//System.out.println(path);
+		String[] files = (new File(path)).list();
+		for (int i =0; i < files.length; i++){
+			if (files[i].contains("edges") ){
+				for (int j = 0; j < names.length; j++){
+					if (files[i].contains(names[j])){
+						counts[j]++;
+					}
+				}
+			}
+		}
+		Vector<String[]> titles = new Vector<String[]>();
+		for (int j = 0; j < names.length; j++){
+			titles.add(new String[counts[j]]); 
+		}
+		int[] cur = new int[counts.length];
+		
+		for (int i = 0;i< files.length; i++){
+			if (files[i].contains("edges") ){
+				for (int j = 0; j < names.length; j++){
+					if (files[i].contains(names[j])){
+		System.out.println("Start " +files[i] + " " + new Date());
+		String name = files[i].replace(".edges", "").replace("_", "-");
+		
+		
+		try{
+		GraphReader read = new EdgesOnlyReader(path+files[i]);
+		
+		if (!(new File("results/"+title+ names[j]+"/"+name+ "Count.txt")).exists()) {
+		Graph g = new UndirectedNLGraph(read);
+		MotifAnalyzer mo = new FourUndirectedMotifAnalyzer(true,false);
+		mo.analyzeMotifs(false, false, "results/"+title+ names[j]+"/"+name, g);
+		}
+		titles.get(j)[cur[j]] = name;
+		cur[j]++;
+		} catch(IOException e){
+			e.printStackTrace();
+		}
+					}
+				}
+		
+		//}		
+			}
+			
+			
+			
+	}
+		for(int s = 0; s < titles.size(); s++){
+			Plot.plotCountPerc("results/"+title+ names[s]+"/", titles.get(s), names[s]+"CountPerc", true);
+			Plot.plotCounts("results/"+title+ names[s]+"/", titles.get(s), names[s]+"Count", true);
+		}		
+	}
+	
+	public static void mainplot(String title, String path){
+		String[] names = {""};
+		int[] counts = new int[names.length];
+		for (int n = 0; n < names.length; n++){
+			(new File("results/"+title+names[n])).mkdir();
+		}
+		//System.out.println(path);
+		String[] files = (new File(path)).list();
+		for (int i =0; i < files.length; i++){
+			if (files[i].contains("edges") ){
+				for (int j = 0; j < names.length; j++){
+					if (files[i].contains(names[j])){
+						counts[j]++;
+					}
+				}
+			}
+		}
+		Vector<String[]> titles = new Vector<String[]>();
+		for (int j = 0; j < names.length; j++){
+			titles.add(new String[counts[j]]); 
+		}
+		int[] cur = new int[counts.length];
+		
+		for (int i = 0;i< files.length; i++){
+			if (files[i].contains("edges") ){
+				for (int j = 0; j < names.length; j++){
+					if (files[i].contains(names[j])){
+		System.out.println("Start " +files[i] + " " + new Date());
+		String name = files[i].replace(".edges", "").replace("_", "-");
+		
+		
+		try{
+		GraphReader read = new EdgesOnlyReader(path+files[i]);
+		
+		//if (!(new File("results/"+title+ names[j]+"/"+name+ "Count.txt")).exists()) {
+//		Graph g = new UndirectedNLGraph(read);
+//		//GraphWriter gtna = new GTNAWriter("/Users/stefanie/workspace/GTNA/"+title+"/"+name,name,":", ";");
+//		MotifAnalyzer mo = new FourUndirectedMotifAnalyzer(true,false);
+//		mo.analyzeMotifs(false, false, "results/"+title+ names[j]+"/"+name, g);
 		//gtna.writeGraph(g);
 		//gtna.close();
 		//}
@@ -483,6 +730,68 @@ private static void minMax(String folder, String res, int nr){
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
+}
+
+public static void rewrite(String file){
+	double[] old = new double[8];
+	double[] newM = new double[6];
+	try {
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		br.readLine();
+		String line;
+		for (int i = 0; i < old.length; i++){
+			line = br.readLine();
+			old[i] = Double.parseDouble(line.split(" ")[2]);
+		}
+		br.close();
+		BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+		double sum12 = (old[0]+old[1])/(double)100;
+		bw.write("# motif, %");
+		for (int i = 1; i < 7; i++){
+			bw.newLine();
+			bw.write(i +" " + old[i+1]/(1-sum12));
+		}
+		bw.flush();
+		bw.close();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+}
+
+public static void rewriteLabel(String nodeFile, String edgeFile, String result){
+	try {
+		BufferedReader br = new BufferedReader(new FileReader(nodeFile));
+		HashMap<String,String> map = new HashMap<String,String>();
+		String line;
+		String[] parts;
+		while ((line = br.readLine()) != null){
+			parts = line.split("	");
+			if (parts.length > 1){
+				map.put(parts[0], parts[1]);
+			}
+			
+		}
+		br.close();
+		
+		br = new BufferedReader(new FileReader(edgeFile));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(result));
+		while ((line = br.readLine()) != null){
+			parts = line.split("	");
+			if (parts.length > 1){
+				bw.write(map.get(parts[0]) + "	" + map.get(parts[1]));
+				bw.newLine();
+			}
+			
+		}
+		br.close();
+		bw.flush();
+		bw.close();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
 }
 
 }

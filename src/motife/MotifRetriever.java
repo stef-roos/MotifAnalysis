@@ -129,7 +129,7 @@ public abstract class MotifRetriever extends MotifAnalyzer {
 				for (int i = 0; i < this.nodes[index]; i++){
 					line = line + motifNodes[i].getLabel() + " ";
 				}
-				line = line + "[EdgeWeight = " + this.edgeweight + "] [NodeWeight = " + this.nodeweight + "]";
+				//line = line + "[EdgeWeight = " + this.edgeweight + "] [NodeWeight = " + this.nodeweight + "]";
 				try {
 					bw.write(line);
 					bw.newLine();

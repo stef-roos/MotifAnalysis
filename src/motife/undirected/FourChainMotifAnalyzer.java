@@ -34,20 +34,20 @@ public class FourChainMotifAnalyzer extends MotifRetriever {
 		Node[] motifNodes = new Node[this.nodes[0]];
 		Edge[] motifEdges = new Edge[this.edges[0]];
 		for (int i = 0; i < nodes.length; i++){
-			motifNodes[0] = nodes[i];
-		    neighbors = motifNodes[0].getNeighbors();
+			motifNodes[1] = nodes[i];
+		    neighbors = motifNodes[1].getNeighbors();
 		    for (int j = 0; j < neighbors.length; j++){
 		    	motifEdges[0] = neighbors[j];
-		    	motifNodes[1] = nodes[motifEdges[0].getNode()];
-		    	if (motifNodes[1].getIndex() < motifNodes[0].getIndex()){
+		    	motifNodes[2] = nodes[motifEdges[0].getNode()];
+		    	if (motifNodes[2].getIndex() < motifNodes[1].getIndex()){
 		    		continue;
 		    	}
-		    	neighbors2 = motifNodes[1].getNeighbors();
+		    	neighbors2 = motifNodes[2].getNeighbors();
 		    	for (int k = 0; k < neighbors.length; k++){
 		    		if (j == k) continue;
 		    		motifEdges[1] = neighbors[k];
-			    	motifNodes[2] = nodes[motifEdges[1].getNode()];
-			    	if (motifNodes[1].getLink(motifNodes[2].getIndex()) != null){
+			    	motifNodes[0] = nodes[motifEdges[1].getNode()];
+			    	if (motifNodes[2].getLink(motifNodes[0].getIndex()) != null){
 			    		continue;
 			    	}
 			    	for (int l = 0; l < neighbors2.length; l++){
@@ -56,8 +56,8 @@ public class FourChainMotifAnalyzer extends MotifRetriever {
 			    		if (motifNodes[3].getIndex() == i){
 			    			continue;
 			    		}
-			    		if (motifNodes[0].getLink(motifNodes[3].getIndex()) != null
-			    				|| motifNodes[2].getLink(motifNodes[3].getIndex()) != null){
+			    		if (motifNodes[1].getLink(motifNodes[3].getIndex()) != null
+			    				|| motifNodes[0].getLink(motifNodes[3].getIndex()) != null){
 				    		continue;
 				    	}
 			    		this.evaluateMotif(0, motifNodes, motifEdges);

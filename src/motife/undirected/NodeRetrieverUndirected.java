@@ -1,5 +1,6 @@
 package motife.undirected;
 
+import java.util.Arrays;
 import java.util.Vector;
 
 import motife.MotifNodeRetriever;
@@ -153,7 +154,9 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 				if (motifNodes[1].getLink(motifNodes[2].getIndex()) == null){
 					//this.evaluateMotif(0, motifNodes, motifEdges);
 					count++;
-					res.add(index.clone());
+					int[] clone = index.clone();
+					Arrays.sort(clone);
+					res.add(clone);
 				}
 			}
 			
@@ -169,7 +172,9 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 				if (motifNodes[0].getLink(motifNodes[2].getIndex()) == null){
 					//this.evaluateMotif(0, motifNodes, motifEdges);
 					count++;
-					res.add(index.clone());
+					int[] clone = index.clone();
+					Arrays.sort(clone);
+					res.add(clone);
 				}
 			}
 		}
@@ -204,7 +209,9 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 				if (motifEdges[2] != null){
 					//this.evaluateMotif(1, motifNodes, motifEdges);
 					count++;
-					res.add(index.clone());
+					int[] clone = index.clone();
+					Arrays.sort(clone);
+					res.add(clone);
 				}
 			}
 			
@@ -251,9 +258,11 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(2, motifNodes, motifEdges);
 					count++;
-					res.add(index.clone());
+					int[] clone = index.clone();
+					Arrays.sort(clone);
+					res.add(clone);
 				}
-				
+			
 			}
 			
 			//case 2: node has degree 1 in Motif
@@ -278,7 +287,9 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(2, motifNodes, motifEdges);
 					count++;
-					res.add(index.clone());
+					int[] clone = index.clone();
+					Arrays.sort(clone);
+					res.add(clone);
 				}
 			}
 		}
@@ -327,7 +338,9 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(3, motifNodes, motifEdges);
 					count++;
-					res.add(index.clone());
+					int[] clone = index.clone();
+					Arrays.sort(clone);
+					res.add(clone);
 				}
 				
 				//case: Nodes has degree 1 in motif
@@ -344,7 +357,9 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(3, motifNodes, motifEdges);
 					count++;
-					res.add(index.clone());
+					int[] clone = index.clone();
+					Arrays.sort(clone);
+					res.add(clone);
 				}
 			}
 		}
@@ -394,7 +409,9 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(4, motifNodes, motifEdges);
 					count++;
-					res.add(index.clone());
+					int[] clone = index.clone();
+					Arrays.sort(clone);
+					res.add(clone);
 				}	
 				
 				//case 2: node has degree 2
@@ -412,7 +429,9 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(4, motifNodes, motifEdges);
 					count++;
-					res.add(index.clone());
+					int[] clone = index.clone();
+					Arrays.sort(clone);
+					res.add(clone);
 				}
 				
 				neighbors2 = motifNodes[2].getNeighbors();
@@ -429,7 +448,9 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(4, motifNodes, motifEdges);
 					count++;
-					res.add(index.clone());
+					int[] clone = index.clone();
+					Arrays.sort(clone);
+					res.add(clone);
 				}
 			}
 			
@@ -460,7 +481,9 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(4, motifNodes, motifEdges);
 					count++;
-					res.add(index.clone());
+					int[] clone = index.clone();
+					Arrays.sort(clone);
+					res.add(clone);
 				}
 				
 			}
@@ -512,7 +535,9 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 					
 					//this.evaluateMotif(5, motifNodes, motifEdges);
 					count++;
-					res.add(index.clone());
+					int[] clone = index.clone();
+					Arrays.sort(clone);
+					res.add(clone);
 				}
 			}
 			
@@ -564,7 +589,9 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 						
 						//this.evaluateMotif(6, motifNodes, motifEdges);
 						count++;
-						res.add(index.clone());
+						int[] clone = index.clone();
+						Arrays.sort(clone);
+						res.add(clone);
 					}
 				} else {
 					//case 2: Node has degree 3 in motif
@@ -589,7 +616,9 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 						
 						//this.evaluateMotif(6, motifNodes, motifEdges);
 						count++;
-						res.add(index.clone());
+						int[] clone = index.clone();
+						Arrays.sort(clone);
+						res.add(clone);
 					}
 				}
 				
@@ -643,7 +672,9 @@ public class NodeRetrieverUndirected extends MotifNodeRetriever {
 				}
 				//this.evaluateMotif(7, motifNodes, motifEdges);
 				count++;
-				res.add(index.clone());
+				int[] clone = index.clone();
+				Arrays.sort(clone);
+				res.add(clone);
 			}
 			}
 		}
