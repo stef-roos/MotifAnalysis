@@ -6,15 +6,13 @@ import architecture.node.Node;
 import motife.MotifRetriever;
 
 /**
- * retrieve or analyze all undirected 3/4 nodes motifs
- * 1: A--B, B--C (SemiClique3)
- * 2: A--B, B--C, C--A (Clique3)
- * 3: A--B, A--C, A--D (TwoV)
- * 4: A--B, B--C, C--D (FourChain)
- * 5: A--B, B--C, C--A, A--D (ThreeLoopOut)
- * 6: A--B, B--C, C--D, D--A (FoutLoop)
- * 7: A--B, B--C, C--D, D--A, A--C (SemiClique4)
- * 8: A--B, A--C, A--D, B--C, B--D, C--D (Clique4)
+ * retrieve or analyze all undirected 4 nodes motifs
+ * 1: A--B, A--C, A--D (Star)
+ * 2: A--B, B--C, C--D (FourChain)
+ * 3: A--B, B--C, C--A, A--D (ThreeLoopOut)
+ * 4: A--B, B--C, C--D, D--A (FoutLoop)
+ * 5: A--B, B--C, C--D, D--A, A--C (SemiClique4)
+ * 6: A--B, A--C, A--D, B--C, B--D, C--D (Clique4)
  * @author stefanie
  * based on work by Lachezar Krumov
  */
